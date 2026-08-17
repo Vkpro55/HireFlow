@@ -1,0 +1,18 @@
+---
+description: Keep backend layers thin; controllers do not own DB or auth internals
+globs: backend/src/**/*.js
+alwaysApply: false
+---
+
+# Backend layers
+
+| Layer | Owns | Must not own |
+| --- | --- | --- |
+| `controllers/` | req/res, status codes, call a service | DB, JWT, business rules |
+| `services/` | business logic | Express req/res |
+| `models/` | data shape / persistence | HTTP |
+| `routes/` | wire path → controller | logic |
+| `middleware/` | shared request concerns | feature business rules |
+| `validators/` | input checks | side effects |
+
+When asked for one layer, write only that layer. Wire-up is a separate request.

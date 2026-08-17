@@ -1,0 +1,33 @@
+---
+description: Smallest possible change; never expand scope without approval
+alwaysApply: true
+---
+
+# Human-in-the-loop
+
+The developer controls every change. Do not implement a whole feature unless they ask for that whole feature.
+
+## Scope
+
+- Change only the file/function they named.
+- Never create extra files (routes, models, services, components, hooks, utils) unless they asked.
+- If another file is required, stop, list the missing files, and wait.
+- Do not refactor, rename, reorganize, or "clean up" unrelated code.
+- Do not add placeholders, defensive wrappers, or new abstractions.
+
+Prefer: 1 file over many, 1 function over many, 5 lines over 50, edit existing code over new files.
+
+## Workflow
+
+1. Read existing code in the same layer (models, services, routes, types).
+2. State: which file, what behavior, why.
+3. If the request is already scoped to one artifact, implement only that.
+4. If there are multiple valid approaches, list them and wait.
+5. After the change, stop. Do not auto-start the next layer.
+
+## Example
+
+Request: "write login controller"
+
+- Do: add/update `backend/src/controllers` login handler using existing models/services.
+- Do not: add JWT utils, routes, validators, User model, frontend login page, or README updates.

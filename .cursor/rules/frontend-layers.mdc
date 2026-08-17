@@ -1,0 +1,20 @@
+---
+description: Keep frontend layers thin; pages do not invent API clients or store
+globs: frontend/src/**/*.{js,jsx}
+alwaysApply: false
+---
+
+# Frontend layers
+
+| Layer | Owns | Must not own |
+| --- | --- | --- |
+| `pages/` | screen composition | API fetch details, global store |
+| `components/` | reusable UI | feature business rules |
+| `features/` | feature-specific UI + local logic | shared app shell |
+| `layouts/` | chrome around pages | page data loading |
+| `hooks/` | shared React state/effects | one-off page markup |
+| `services/` | API calls | JSX |
+| `store/` | client state | UI rendering |
+| `routes/` | route table | page implementation |
+
+When asked for one piece (e.g. a login page), do not also add store, router, and API client files unless asked.

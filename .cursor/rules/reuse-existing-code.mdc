@@ -1,0 +1,29 @@
+---
+description: Match existing codebase; do not invent parallel types, models, or folders
+alwaysApply: true
+---
+
+# Reuse existing code
+
+Before writing anything, inspect the current tree and reuse what already exists.
+
+## Required reads
+
+For a backend request, check `backend/src/` for `models`, `services`, `routes`, `middleware`, `validators`, `constants`, `utils`, and `app.js`.
+
+For a frontend request, check `frontend/src/` for `app`, `components`, `features`, `pages`, `layouts`, `hooks`, `services`, `store`, `types`, `utils`, and `routes`.
+
+## Rules
+
+- Copy existing naming, export style, and request/response shapes.
+- If a model/service/type already exists, import it. Do not recreate it.
+- If it does not exist, say what is missing and wait. Do not invent a second stack.
+- Do not add TypeScript, ESLint, or new tooling unless asked.
+- Empty folders are intentional. Do not fill them "to be complete."
+
+## Example
+
+Request: "write login controller"
+
+- If `User` model and `auth` service exist, the controller should be thin HTTP in/out + service call.
+- If they do not exist, reply with the gap list instead of generating incompatible files.
