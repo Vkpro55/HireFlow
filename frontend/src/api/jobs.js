@@ -1,5 +1,15 @@
 import { apiClient } from './client.js';
 
+export async function getJobs(params = {}) {
+  const { data } = await apiClient.get('/jobs', { params });
+  return data;
+}
+
+export async function getJob(id) {
+  const { data } = await apiClient.get(`/jobs/${id}`);
+  return data.job;
+}
+
 export async function getMyJobs(params = {}) {
   const { data } = await apiClient.get('/jobs/mine', { params });
   return data;

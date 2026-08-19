@@ -18,7 +18,7 @@ function AuthenticatedLayout() {
     { label: 'Dashboard', path: dashboardPath, icon: LayoutDashboard, end: true },
     ...(user.role === 'recruiter'
       ? [{ label: 'Jobs', path: '/recruiter/jobs', icon: BriefcaseBusiness }]
-      : [{ label: 'Jobs', icon: BriefcaseBusiness, disabled: true }]),
+      : [{ label: 'Jobs', path: '/candidate/jobs', icon: BriefcaseBusiness }]),
     { label: 'Profile', icon: UserRound, disabled: true },
   ];
 
