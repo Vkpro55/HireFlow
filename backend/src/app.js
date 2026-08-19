@@ -1,4 +1,5 @@
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import { connectDb } from './config/db.js';
 import { env } from './config/env.js';
@@ -6,8 +7,9 @@ import authRoutes from './routes/authRoutes.js';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: env.frontendOrigin, credentials: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 
 async function start() {

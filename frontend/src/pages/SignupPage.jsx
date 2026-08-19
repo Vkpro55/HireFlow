@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { Briefcase, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
+import Checkbox from '../components/ui/Checkbox.jsx';
 import Logo from '../components/ui/Logo.jsx';
 import PasswordField from '../components/ui/PasswordField.jsx';
 import RoleCard from '../components/ui/RoleCard.jsx';
 import TextField from '../components/ui/TextField.jsx';
-import { register, saveSession } from '../services/auth.js';
+import { register } from '../services/auth.js';
 
 const TAGLINES = {
   candidate: 'Join HireFlow and take the next step in your hiring journey.',
@@ -28,6 +29,7 @@ function SignupPage() {
     const email = String(form.get('email') || '').trim();
     const password = String(form.get('password') || '');
     const confirmPassword = String(form.get('confirmPassword') || '');
+    const remember = form.get('remember') === 'on';
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -36,8 +38,7 @@ function SignupPage() {
 
     try {
       setIsSubmitting(true);
-      const data = await register({ name, email, password, role });
-      saveSession(data);
+      await register({ name, email, password, role, remember });
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Unable to create your account');
@@ -107,6 +108,8 @@ function SignupPage() {
               autoComplete="new-password"
             />
           </div>
+
+          <Checkbox id="signup-remember-me" name="remember" label="Remember me" />
 
           {error ? (
             <p className="font-body-sm text-body-sm text-center text-text-primary">{error}</p>

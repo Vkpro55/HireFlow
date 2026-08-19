@@ -5,7 +5,7 @@ import Checkbox from '../components/ui/Checkbox.jsx';
 import Logo from '../components/ui/Logo.jsx';
 import PasswordField from '../components/ui/PasswordField.jsx';
 import TextField from '../components/ui/TextField.jsx';
-import { login, saveSession } from '../services/auth.js';
+import { login } from '../services/auth.js';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -19,11 +19,11 @@ function LoginPage() {
     const form = new FormData(event.currentTarget);
     const email = String(form.get('email') || '').trim();
     const password = String(form.get('password') || '');
+    const remember = form.get('remember') === 'on';
 
     try {
       setIsSubmitting(true);
-      const data = await login({ email, password });
-      saveSession(data);
+      await login({ email, password, remember });
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Unable to sign in');
@@ -70,7 +70,7 @@ function LoginPage() {
             />
           </div>
 
-          <Checkbox label="Remember me" />
+          <Checkbox id="remember-me" name="remember" label="Remember me" />
 
           {error ? (
             <p className="font-body-sm text-body-sm text-center text-text-primary">{error}</p>

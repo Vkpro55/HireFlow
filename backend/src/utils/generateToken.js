@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 
-export function generateToken(user) {
+export function generateAccessToken(user) {
   if (!env.jwtSecret) {
     throw new Error('JWT_SECRET is not set');
   }
