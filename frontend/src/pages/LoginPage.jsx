@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
 import Checkbox from '../components/ui/Checkbox.jsx';
 import Logo from '../components/ui/Logo.jsx';
@@ -41,9 +42,12 @@ function LoginPage() {
 
         <p className="w-full pt-2 text-center font-body-sm text-body-sm font-normal leading-5 text-text-secondary md:pt-4">
           Don&apos;t have an account?{' '}
-          <span className="font-body-sm-medium font-medium text-text-primary underline lg:no-underline">
+          <Link
+            to="/signup"
+            className="font-body-sm-medium font-medium text-text-primary underline"
+          >
             Create an account
-          </span>
+          </Link>
         </p>
       </div>
     </div>
