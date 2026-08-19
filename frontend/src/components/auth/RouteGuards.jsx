@@ -16,3 +16,7 @@ export function RoleRoute({ role }) {
   const { user } = useAuth();
   return user?.role === role ? <Outlet /> : <Navigate to="/" replace />;
 }
+export function RoleHomeRedirect() {
+  const { user } = useAuth();
+  return <Navigate to={user.role === 'recruiter' ? '/recruiter' : '/candidate'} replace />;
+}

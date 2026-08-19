@@ -39,8 +39,8 @@ function SignupPage() {
 
     try {
       setIsSubmitting(true);
-      await register({ name, email, password, role, remember });
-      navigate('/');
+      const response = await register({ name, email, password, role, remember });
+      navigate(response.user.role === 'recruiter' ? '/recruiter' : '/candidate');
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Unable to create your account');
     } finally {

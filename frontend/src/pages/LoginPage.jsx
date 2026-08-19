@@ -24,8 +24,8 @@ function LoginPage() {
 
     try {
       setIsSubmitting(true);
-      await login({ email, password, remember });
-      navigate('/');
+      const response = await login({ email, password, remember });
+      navigate(response.user.role === 'recruiter' ? '/recruiter' : '/candidate');
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Unable to sign in');
     } finally {
