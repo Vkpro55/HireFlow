@@ -1,0 +1,73 @@
+:root {
+  --color-fill-bg-primary: rgba(251, 251, 231, 1);
+  --color-fill-bg-dark: rgba(26, 26, 26, 1);
+  --color-fill-white: rgba(255, 255, 255, 1);
+  --color-fill-text-primary: rgba(26, 26, 26, 1);
+  --color-fill-text-secondary: rgba(77, 77, 77, 1);
+  --color-fill-text-tertiary: rgba(115, 115, 115, 1);
+  --color-fill-text-muted: rgba(102, 102, 102, 1);
+  --color-fill-border-default: rgba(0, 0, 0, 1);
+  --color-fill-border-light: rgba(229, 229, 213, 1);
+
+  --color-primitives-cream: rgba(251, 251, 231, 1);
+  --color-primitives-charcoal: rgba(26, 26, 26, 1);
+  --color-primitives-white: rgba(255, 255, 255, 1);
+  --color-primitives-gray-700: rgba(77, 77, 77, 1);
+  --color-primitives-gray-500: rgba(115, 115, 115, 1);
+  --color-primitives-gray-600: rgba(102, 102, 102, 1);
+  --color-primitives-black: rgba(0, 0, 0, 1);
+  --color-primitives-warm-border: rgba(229, 229, 213, 1);
+  --color-primitives-outline: rgba(29, 27, 32, 1);
+
+  --color-bg-primary: rgba(251, 251, 231, 1);
+  --color-bg-dark: rgba(26, 26, 26, 1);
+  --color-bg-white: rgba(255, 255, 255, 1);
+
+  --color-text-primary: rgba(26, 26, 26, 1);
+  --color-text-secondary: rgba(77, 77, 77, 1);
+  --color-text-tertiary: rgba(115, 115, 115, 1);
+  --color-text-muted: rgba(102, 102, 102, 1);
+  --color-text-inverse: rgba(255, 255, 255, 1);
+
+  --color-border-default: rgba(0, 0, 0, 1);
+  --color-border-dark: rgba(26, 26, 26, 1);
+  --color-border-muted: rgba(102, 102, 102, 1);
+  --color-border-subtle: rgba(77, 77, 77, 1);
+  --color-border-light: rgba(229, 229, 213, 1);
+  --color-border-input: rgba(29, 27, 32, 1);
+
+  --color-input-bg: rgba(255, 255, 255, 1);
+  --color-input-text: rgba(26, 26, 26, 1);
+  --color-input-placeholder: rgba(115, 115, 115, 1);
+
+  --color-button-bg: rgba(26, 26, 26, 1);
+  --color-button-text: rgba(255, 255, 255, 1);
+
+  --font-logo: Figtree;
+  --font-display-lg: Tangerine;
+  --font-display-md: Tangerine;
+  --font-display-sm: Tangerine;
+  --font-body-lg-semibold: EB Garamond;
+  --font-body-lg: EB Garamond;
+  --font-body-base-medium: EB Garamond;
+  --font-body-base: EB Garamond;
+  --font-body-sm-medium: EB Garamond;
+  --font-body-sm: EB Garamond;
+  --font-body-xs: EB Garamond;
+  --font-ui-base: Inter;
+
+  --text-logo: 20px;
+  --text-display-lg: 100px;
+  --text-display-md: 88px;
+  --text-display-sm: 72px;
+  --text-body-lg-semibold: 18px;
+  --text-body-lg: 18px;
+  --text-body-base-medium: 16px;
+  --text-body-base: 16px;
+  --text-body-sm-medium: 14px;
+  --text-body-sm: 14px;
+  --text-body-xs: 13px;
+  --text-ui-base: 14px;
+
+  --shadow-sm: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
