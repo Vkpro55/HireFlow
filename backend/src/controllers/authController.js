@@ -66,3 +66,11 @@ export async function logout(req, res) {
   res.clearCookie(REFRESH_COOKIE, refreshCookieOptions());
   return res.status(204).send();
 }
+
+export function currentUser(req, res) {
+  return res.status(200).json({ user: req.user });
+}
+
+export function recruiterArea(req, res) {
+  return res.status(200).json({ message: 'Recruiter access granted', user: req.user });
+}

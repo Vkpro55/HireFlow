@@ -1,4 +1,5 @@
 import {
+  getCurrentUser,
   getAccessToken,
   login as loginRequest,
   logout as logoutRequest,
@@ -20,6 +21,10 @@ export function restoreSession() {
 
 export function getSessionToken() {
   return getAccessToken();
+}
+
+export function getSessionUser() {
+  return getCurrentUser();
 }
 
 export function logout() {

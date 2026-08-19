@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 let accessToken = null;
+let currentUser = null;
 let refreshPromise = null;
 
 const authApi = axios.create({
@@ -23,12 +24,21 @@ export function getAccessToken() {
   return accessToken;
 }
 
+export function getCurrentUser() {
+  return currentUser;
+}
+
+function setSession(data) {
+  setAccessToken(data.accessToken);
+  currentUser = data.user || null;
+}
+
 export async function refreshSession() {
   if (!refreshPromise) {
     refreshPromise = authApi
       .post('/refresh')
       .then(({ data }) => {
-        setAccessToken(data.accessToken);
+        setSession(data);
         return data;
       })
       .finally(() => {
@@ -74,17 +84,18 @@ authApi.interceptors.response.use(
 
 export async function register(body) {
   const response = await authApi.post('/register', body);
-  setAccessToken(response.data.accessToken);
+  setSession(response.data);
   return response.data;
 }
 
 export async function login(body) {
   const response = await authApi.post('/login', body);
-  setAccessToken(response.data.accessToken);
+  setSession(response.data);
   return response.data;
 }
 
 export async function logout() {
   await authApi.post('/logout');
   setAccessToken(null);
+  currentUser = null;
 }

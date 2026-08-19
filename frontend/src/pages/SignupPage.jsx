@@ -7,7 +7,7 @@ import Logo from '../components/ui/Logo.jsx';
 import PasswordField from '../components/ui/PasswordField.jsx';
 import RoleCard from '../components/ui/RoleCard.jsx';
 import TextField from '../components/ui/TextField.jsx';
-import { register } from '../services/auth.js';
+import { useAuth } from '../hooks/useAuth.jsx';
 
 const TAGLINES = {
   candidate: 'Join HireFlow and take the next step in your hiring journey.',
@@ -16,6 +16,7 @@ const TAGLINES = {
 
 function SignupPage() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [role, setRole] = useState('candidate');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

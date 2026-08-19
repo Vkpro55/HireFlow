@@ -1,14 +1,13 @@
-import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { AuthProvider } from '../hooks/useAuth.jsx';
 import { router } from '../routes/index.jsx';
-import { restoreSession } from '../services/auth.js';
 
 function App() {
-  useEffect(() => {
-    restoreSession().catch(() => {});
-  }, []);
-
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

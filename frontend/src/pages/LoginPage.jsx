@@ -5,10 +5,11 @@ import Checkbox from '../components/ui/Checkbox.jsx';
 import Logo from '../components/ui/Logo.jsx';
 import PasswordField from '../components/ui/PasswordField.jsx';
 import TextField from '../components/ui/TextField.jsx';
-import { login } from '../services/auth.js';
+import { useAuth } from '../hooks/useAuth.jsx';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
