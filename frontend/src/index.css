@@ -1,4 +1,6 @@
-:root {
+@import "tailwindcss";
+
+@theme {
   --color-fill-bg-primary: rgba(251, 251, 231, 1);
   --color-fill-bg-dark: rgba(26, 26, 26, 1);
   --color-fill-white: rgba(255, 255, 255, 1);
@@ -43,18 +45,18 @@
   --color-button-bg: rgba(26, 26, 26, 1);
   --color-button-text: rgba(255, 255, 255, 1);
 
-  --font-logo: Figtree;
-  --font-display-lg: Tangerine;
-  --font-display-md: Tangerine;
-  --font-display-sm: Tangerine;
-  --font-body-lg-semibold: EB Garamond;
-  --font-body-lg: EB Garamond;
-  --font-body-base-medium: EB Garamond;
-  --font-body-base: EB Garamond;
-  --font-body-sm-medium: EB Garamond;
-  --font-body-sm: EB Garamond;
-  --font-body-xs: EB Garamond;
-  --font-ui-base: Inter;
+  --font-logo: Figtree, sans-serif;
+  --font-display-lg: Tangerine, cursive;
+  --font-display-md: Tangerine, cursive;
+  --font-display-sm: Tangerine, cursive;
+  --font-body-lg-semibold: "EB Garamond", serif;
+  --font-body-lg: "EB Garamond", serif;
+  --font-body-base-medium: "EB Garamond", serif;
+  --font-body-base: "EB Garamond", serif;
+  --font-body-sm-medium: "EB Garamond", serif;
+  --font-body-sm: "EB Garamond", serif;
+  --font-body-xs: "EB Garamond", serif;
+  --font-ui-base: Inter, sans-serif;
 
   --text-logo: 20px;
   --text-display-lg: 100px;
