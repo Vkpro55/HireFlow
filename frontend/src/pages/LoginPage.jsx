@@ -1,11 +1,37 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
 import Checkbox from '../components/ui/Checkbox.jsx';
 import Logo from '../components/ui/Logo.jsx';
 import PasswordField from '../components/ui/PasswordField.jsx';
 import TextField from '../components/ui/TextField.jsx';
+import { login, saveSession } from '../services/auth.js';
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError('');
+
+    const form = new FormData(event.currentTarget);
+    const email = String(form.get('email') || '').trim();
+    const password = String(form.get('password') || '');
+
+    try {
+      setIsSubmitting(true);
+      const data = await login({ email, password });
+      saveSession(data);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || 'Unable to sign in');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg-primary px-6 pt-16 pb-12 md:p-12 lg:p-8">
       <div className="flex w-full max-w-[448px] flex-col items-center gap-7 md:gap-8 lg:gap-0">
@@ -22,9 +48,13 @@ function LoginPage() {
           </p>
         </div>
 
-        <form className="flex w-full flex-col gap-4 md:max-w-[384px] md:gap-5 lg:pt-4">
+        <form
+          className="flex w-full flex-col gap-4 md:max-w-[384px] md:gap-5 lg:pt-4"
+          onSubmit={handleSubmit}
+        >
           <TextField
             id="login-email"
+            name="email"
             label="Email"
             type="email"
             placeholder="you@company.com"
@@ -32,12 +62,23 @@ function LoginPage() {
           />
 
           <div className="lg:pb-2">
-            <PasswordField id="login-password" label="Password" autoComplete="current-password" />
+            <PasswordField
+              id="login-password"
+              name="password"
+              label="Password"
+              autoComplete="current-password"
+            />
           </div>
 
           <Checkbox label="Remember me" />
 
-          <Button>Sign in</Button>
+          {error ? (
+            <p className="font-body-sm text-body-sm text-center text-text-primary">{error}</p>
+          ) : null}
+
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Signing in...' : 'Sign in'}
+          </Button>
         </form>
 
         <p className="w-full pt-2 text-center font-body-sm text-body-sm font-normal leading-5 text-text-secondary md:pt-4">

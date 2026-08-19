@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Briefcase, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
 import Logo from '../components/ui/Logo.jsx';
 import PasswordField from '../components/ui/PasswordField.jsx';
 import RoleCard from '../components/ui/RoleCard.jsx';
 import TextField from '../components/ui/TextField.jsx';
+import { register, saveSession } from '../services/auth.js';
 
 const TAGLINES = {
   candidate: 'Join HireFlow and take the next step in your hiring journey.',
@@ -13,7 +14,37 @@ const TAGLINES = {
 };
 
 function SignupPage() {
+  const navigate = useNavigate();
   const [role, setRole] = useState('candidate');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError('');
+
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get('name') || '').trim();
+    const email = String(form.get('email') || '').trim();
+    const password = String(form.get('password') || '');
+    const confirmPassword = String(form.get('confirmPassword') || '');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const data = await register({ name, email, password, role });
+      saveSession(data);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || err.message || 'Unable to create your account');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-bg-primary px-6 pt-16 pb-12 md:p-12 lg:px-20 lg:py-16">
@@ -29,7 +60,7 @@ function SignupPage() {
           </p>
         </div>
 
-        <form className="flex w-full flex-col gap-6">
+        <form className="flex w-full flex-col gap-6" onSubmit={handleSubmit}>
           <div className="flex w-full gap-4">
             <RoleCard
               selected={role === 'candidate'}
@@ -50,12 +81,14 @@ function SignupPage() {
           <div className="flex w-full flex-col gap-4">
             <TextField
               id="signup-name"
+              name="name"
               label="Full Name"
               placeholder="Jane Doe"
               autoComplete="name"
             />
             <TextField
               id="signup-email"
+              name="email"
               label="Email"
               type="email"
               placeholder="jane@company.com"
@@ -63,17 +96,25 @@ function SignupPage() {
             />
             <PasswordField
               id="signup-password"
+              name="password"
               label="Password"
               autoComplete="new-password"
             />
             <PasswordField
               id="signup-confirm-password"
+              name="confirmPassword"
               label="Confirm Password"
               autoComplete="new-password"
             />
           </div>
 
-          <Button>Create account</Button>
+          {error ? (
+            <p className="font-body-sm text-body-sm text-center text-text-primary">{error}</p>
+          ) : null}
+
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating account...' : 'Create account'}
+          </Button>
         </form>
 
         <p className="w-full text-center font-body-sm text-body-sm font-normal leading-5 text-text-secondary">
