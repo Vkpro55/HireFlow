@@ -4,6 +4,7 @@ import express from 'express';
 import { connectDb } from './config/db.js';
 import { env } from './config/env.js';
 import authRoutes from './routes/authRoutes.js';
+import jobRoutes from './routes/jobRoutes.js';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(cors({ origin: env.frontendOrigin, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
 
 async function start() {
   await connectDb();
