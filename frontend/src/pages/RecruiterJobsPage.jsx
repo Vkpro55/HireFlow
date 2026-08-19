@@ -1,4 +1,4 @@
-import { Edit3, MoreHorizontal, Plus, Power, Trash2 } from 'lucide-react';
+import { Edit3, MoreHorizontal, Plus, Power, Trash2, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button.jsx';
@@ -99,6 +99,7 @@ function RecruiterJobsPage() {
               <p className="line-clamp-3 font-body-base text-body-base leading-6 text-text-secondary">{job.description}</p>
               <div className="mt-auto flex flex-wrap gap-2">
                 <Button type="button" onClick={() => navigate(`/recruiter/jobs/${job._id}/edit`)}><span className="flex items-center justify-center gap-2"><Edit3 size={16} aria-hidden="true" />Edit</span></Button>
+                <Link className="flex flex-1 items-center justify-center gap-2 rounded-md border border-border-default px-3 py-3 font-body-sm-medium text-body-sm font-medium text-text-primary" to={`/recruiter/jobs/${job._id}/applications`}><Users size={16} aria-hidden="true" />Applicants</Link>
                 <button className="flex flex-1 items-center justify-center gap-2 rounded-md border border-border-default px-3 py-3 font-body-sm-medium text-body-sm font-medium text-text-primary" type="button" onClick={() => handleStatusChange(job)}><Power size={16} aria-hidden="true" />{job.status === 'open' ? 'Close' : 'Open'}</button>
                 <button className="flex size-12 items-center justify-center rounded-md border border-red-200 text-red-700" type="button" onClick={() => handleDelete(job)} aria-label={`Delete ${job.title}`}><Trash2 size={17} aria-hidden="true" /></button>
               </div>

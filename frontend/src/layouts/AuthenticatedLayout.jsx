@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, LayoutDashboard, LogOut, UserRound } from 'lucide-react';
+import { BriefcaseBusiness, ClipboardList, LayoutDashboard, LogOut, UserRound } from 'lucide-react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import Logo from '../components/ui/Logo.jsx';
 import { useAuth } from '../hooks/useAuth.jsx';
@@ -15,16 +15,16 @@ function AuthenticatedLayout() {
   }
 
   const navItems = [
-    { label: 'Dashboard', path: dashboardPath, icon: LayoutDashboard, end: true },
+    { label: 'Dashboard', mobileLabel: 'Home', path: dashboardPath, icon: LayoutDashboard, end: true },
     ...(user.role === 'recruiter'
-      ? [{ label: 'Jobs', path: '/recruiter/jobs', icon: BriefcaseBusiness }]
-      : [{ label: 'Jobs', path: '/candidate/jobs', icon: BriefcaseBusiness }]),
-    { label: 'Profile', icon: UserRound, disabled: true },
+      ? [{ label: 'Jobs', mobileLabel: 'Jobs', path: '/recruiter/jobs', icon: BriefcaseBusiness }]
+      : [{ label: 'Jobs', mobileLabel: 'Jobs', path: '/candidate/jobs', icon: BriefcaseBusiness }, { label: 'Applications', mobileLabel: 'Apps', path: '/candidate/applications', icon: ClipboardList }]),
+    { label: 'Profile', mobileLabel: 'Profile', icon: UserRound, disabled: true },
   ];
 
   return (
-    <div className="flex min-h-screen bg-bg-primary text-text-primary">
-      <aside className="hidden w-64 shrink-0 flex-col border-r border-border-light bg-bg-white px-5 py-7 md:flex">
+    <div className="flex h-screen overflow-hidden bg-bg-primary text-text-primary">
+      <aside className="hidden h-full w-64 shrink-0 flex-col overflow-hidden border-r border-border-light bg-bg-white px-5 py-7 md:flex">
         <div className="mb-12 px-2">
           <Logo />
         </div>
@@ -76,8 +76,8 @@ function AuthenticatedLayout() {
         </button>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-border-light bg-bg-white px-5 py-4 md:px-8 md:py-5">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <header className="flex shrink-0 items-center justify-between border-b border-border-light bg-bg-white px-5 py-4 md:px-8 md:py-5">
           <div className="md:hidden">
             <Logo />
           </div>
@@ -95,16 +95,16 @@ function AuthenticatedLayout() {
           </div>
         </header>
 
-        <nav className="flex gap-2 overflow-x-auto border-b border-border-light bg-bg-white px-4 py-3 md:hidden" aria-label="Mobile navigation">
-          {navItems.map(({ label, path, icon: Icon, disabled, end }) => (
+        <nav className="flex shrink-0 flex-nowrap gap-1 overflow-hidden border-b border-border-light bg-bg-white px-2 py-3 md:hidden" aria-label="Mobile navigation">
+          {navItems.map(({ label, mobileLabel, path, icon: Icon, disabled, end }) => (
             disabled ? (
               <div
                 key={label}
-                className="flex shrink-0 cursor-not-allowed items-center gap-2 rounded-md px-3 py-2 font-body-sm text-body-sm text-text-muted opacity-60"
+                className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md px-0 py-2 text-[11px] text-text-muted opacity-60"
                 aria-disabled="true"
               >
                 <Icon size={16} strokeWidth={1.8} aria-hidden="true" />
-                {label}
+                <><span className="hidden min-[500px]:inline">{label}</span><span className="min-[500px]:hidden">{mobileLabel}</span></>
               </div>
             ) : (
               <NavLink
@@ -112,7 +112,7 @@ function AuthenticatedLayout() {
                 to={path}
                 end={end}
                 className={({ isActive }) =>
-                  `flex shrink-0 items-center gap-2 rounded-md px-3 py-2 font-body-sm text-body-sm ${
+                  `flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md px-0 py-2 text-[11px] ${
                     isActive
                       ? 'bg-bg-dark text-text-inverse'
                       : 'text-text-secondary hover:bg-bg-primary hover:text-text-primary'
@@ -120,21 +120,21 @@ function AuthenticatedLayout() {
                 }
               >
                 <Icon size={16} strokeWidth={1.8} aria-hidden="true" />
-                {label}
+                <><span className="hidden min-[500px]:inline">{label}</span><span className="min-[500px]:hidden">{mobileLabel}</span></>
               </NavLink>
             )
           ))}
           <button
-            className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 font-body-sm text-body-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary"
+            className="flex min-w-0 flex-1 items-center justify-center gap-1 rounded-md px-0 py-2 text-[11px] text-text-secondary hover:bg-bg-primary hover:text-text-primary"
             type="button"
             onClick={handleLogout}
           >
             <LogOut size={16} strokeWidth={1.8} aria-hidden="true" />
-            Sign out
+            <><span className="hidden min-[500px]:inline">Sign out</span><span className="min-[500px]:hidden">Exit</span></>
           </button>
         </nav>
 
-        <main className="flex-1 px-5 py-8 md:px-8 md:py-10">
+        <main className="min-h-0 flex-1 overflow-y-auto px-5 py-8 md:px-8 md:py-10">
           <Outlet />
         </main>
       </div>

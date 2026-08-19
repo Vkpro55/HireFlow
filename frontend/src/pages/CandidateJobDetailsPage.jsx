@@ -1,7 +1,11 @@
 import { ArrowLeft, CalendarDays, CheckCircle2, MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { applyToJob, getMyApplications } from '../api/applications.js';
 import { getJob } from '../api/jobs.js';
+import ApplicationForm from '../features/applications/ApplicationForm.jsx';
+import ApplicationStatusBadge from '../components/applications/ApplicationStatusBadge.jsx';
+import Button from '../components/ui/Button.jsx';
 
 function formatDeadline(deadline) {
   return new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(new Date(deadline));
@@ -17,13 +21,39 @@ function CandidateJobDetailsPage() {
   const [job, setJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [application, setApplication] = useState(null);
+  const [isApplyOpen, setIsApplyOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [applyError, setApplyError] = useState('');
 
   useEffect(() => {
-    getJob(id)
-      .then(setJob)
-      .catch((requestError) => setError(requestError.response?.data?.message || 'Unable to load this job'))
+    Promise.allSettled([getJob(id), getMyApplications({ limit: 100 })])
+      .then(([jobResult, applicationsResult]) => {
+        if (jobResult.status === 'rejected') {
+          setError(jobResult.reason.response?.data?.message || 'Unable to load this job');
+          return;
+        }
+        setJob(jobResult.value);
+        if (applicationsResult.status === 'fulfilled') {
+          setApplication(applicationsResult.value.applications.find((item) => item.job?._id === id) || null);
+        }
+      })
       .finally(() => setIsLoading(false));
   }, [id]);
+
+  async function handleApply(values) {
+    try {
+      setApplyError('');
+      setIsSubmitting(true);
+      const submittedApplication = await applyToJob({ jobId: id, ...values });
+      setApplication(submittedApplication);
+      setIsApplyOpen(false);
+    } catch (requestError) {
+      setApplyError(requestError.response?.data?.message || 'Unable to submit application');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   if (isLoading) return <p className="py-12 text-center font-body-base text-body-base text-text-secondary">Loading job details...</p>;
   if (error) return <div className="mx-auto max-w-3xl border border-red-200 bg-red-50 p-6 font-body-base text-body-base text-red-800">{error}</div>;
@@ -65,7 +95,20 @@ function CandidateJobDetailsPage() {
         </div>
 
         <div className="border-t border-border-light pt-6">
-          <p className="font-body-base text-body-base text-text-secondary">Applications will be available in the next step.</p>
+          {application ? (
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div><p className="font-body-base-medium text-body-base font-medium text-text-primary">Application submitted</p><p className="mt-1 font-body-sm text-body-sm text-text-secondary">Your application is being reviewed.</p></div>
+              <div className="flex items-center gap-3"><ApplicationStatusBadge status={application.status} /><Link className="font-body-sm text-body-sm text-text-primary underline" to="/candidate/applications">View applications</Link></div>
+            </div>
+          ) : isApplyOpen ? (
+            <div className="flex flex-col gap-5">
+              <div><h2 className="font-body-lg-semibold text-body-lg-semibold font-semibold text-text-primary">Apply for this role</h2><p className="mt-1 font-body-sm text-body-sm text-text-secondary">Share your resume and a short note with the recruiter.</p></div>
+              {applyError ? <p className="border border-red-200 bg-red-50 px-4 py-3 font-body-sm text-body-sm text-red-800">{applyError}</p> : null}
+              <ApplicationForm isSubmitting={isSubmitting} onSubmit={handleApply} onCancel={() => setIsApplyOpen(false)} />
+            </div>
+          ) : (
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><p className="font-body-base-medium text-body-base font-medium text-text-primary">Interested in this role?</p><p className="mt-1 font-body-sm text-body-sm text-text-secondary">Submit your resume and cover letter before the deadline.</p></div><div className="sm:w-48"><Button type="button" onClick={() => setIsApplyOpen(true)}>Apply now</Button></div></div>
+          )}
         </div>
       </div>
     </section>

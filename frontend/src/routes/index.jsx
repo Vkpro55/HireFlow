@@ -8,6 +8,8 @@ import RecruiterJobFormPage from '../pages/RecruiterJobFormPage.jsx';
 import RecruiterJobsPage from '../pages/RecruiterJobsPage.jsx';
 import CandidateJobsPage from '../pages/CandidateJobsPage.jsx';
 import CandidateJobDetailsPage from '../pages/CandidateJobDetailsPage.jsx';
+import CandidateApplicationsPage from '../pages/CandidateApplicationsPage.jsx';
+import RecruiterApplicationsPage from '../pages/RecruiterApplicationsPage.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,7 @@ export const router = createBrowserRouter([
               { path: 'recruiter/jobs', element: <RecruiterJobsPage /> },
               { path: 'recruiter/jobs/new', element: <RecruiterJobFormPage /> },
               { path: 'recruiter/jobs/:id/edit', element: <RecruiterJobFormPage /> },
+              { path: 'recruiter/jobs/:jobId/applications', element: <RecruiterApplicationsPage /> },
             ],
           },
           {
@@ -33,6 +36,7 @@ export const router = createBrowserRouter([
               { path: 'candidate', element: <RoleDashboardPage role="candidate" /> },
               { path: 'candidate/jobs', element: <CandidateJobsPage /> },
               { path: 'candidate/jobs/:id', element: <CandidateJobDetailsPage /> },
+              { path: 'candidate/applications', element: <CandidateApplicationsPage /> },
             ],
           },
         ],
