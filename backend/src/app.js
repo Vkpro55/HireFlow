@@ -4,6 +4,7 @@ import express from 'express';
 import { connectDb } from './config/db.js';
 import { env } from './config/env.js';
 import authRoutes from './routes/authRoutes.js';
+import applicationRoutes from './routes/applicationRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/applications', applicationRoutes);
 
 async function start() {
   await connectDb();
