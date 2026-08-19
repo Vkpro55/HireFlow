@@ -15,8 +15,10 @@ function AuthenticatedLayout() {
   }
 
   const navItems = [
-    { label: 'Dashboard', path: dashboardPath, icon: LayoutDashboard },
-    { label: 'Jobs', icon: BriefcaseBusiness, disabled: true },
+    { label: 'Dashboard', path: dashboardPath, icon: LayoutDashboard, end: true },
+    ...(user.role === 'recruiter'
+      ? [{ label: 'Jobs', path: '/recruiter/jobs', icon: BriefcaseBusiness }]
+      : [{ label: 'Jobs', icon: BriefcaseBusiness, disabled: true }]),
     { label: 'Profile', icon: UserRound, disabled: true },
   ];
 
@@ -34,7 +36,7 @@ function AuthenticatedLayout() {
         </div>
 
         <nav className="flex flex-1 flex-col gap-2" aria-label="Main navigation">
-          {navItems.map(({ label, path, icon: Icon, disabled }) => (
+          {navItems.map(({ label, path, icon: Icon, disabled, end }) => (
             disabled ? (
               <div
                 key={label}
@@ -48,6 +50,7 @@ function AuthenticatedLayout() {
               <NavLink
                 key={label}
                 to={path}
+                end={end}
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-md px-3 py-3 font-body-base text-body-base ${
                     isActive
@@ -91,6 +94,45 @@ function AuthenticatedLayout() {
             </div>
           </div>
         </header>
+
+        <nav className="flex gap-2 overflow-x-auto border-b border-border-light bg-bg-white px-4 py-3 md:hidden" aria-label="Mobile navigation">
+          {navItems.map(({ label, path, icon: Icon, disabled, end }) => (
+            disabled ? (
+              <div
+                key={label}
+                className="flex shrink-0 cursor-not-allowed items-center gap-2 rounded-md px-3 py-2 font-body-sm text-body-sm text-text-muted opacity-60"
+                aria-disabled="true"
+              >
+                <Icon size={16} strokeWidth={1.8} aria-hidden="true" />
+                {label}
+              </div>
+            ) : (
+              <NavLink
+                key={label}
+                to={path}
+                end={end}
+                className={({ isActive }) =>
+                  `flex shrink-0 items-center gap-2 rounded-md px-3 py-2 font-body-sm text-body-sm ${
+                    isActive
+                      ? 'bg-bg-dark text-text-inverse'
+                      : 'text-text-secondary hover:bg-bg-primary hover:text-text-primary'
+                  }`
+                }
+              >
+                <Icon size={16} strokeWidth={1.8} aria-hidden="true" />
+                {label}
+              </NavLink>
+            )
+          ))}
+          <button
+            className="flex shrink-0 items-center gap-2 rounded-md px-3 py-2 font-body-sm text-body-sm text-text-secondary hover:bg-bg-primary hover:text-text-primary"
+            type="button"
+            onClick={handleLogout}
+          >
+            <LogOut size={16} strokeWidth={1.8} aria-hidden="true" />
+            Sign out
+          </button>
+        </nav>
 
         <main className="flex-1 px-5 py-8 md:px-8 md:py-10">
           <Outlet />

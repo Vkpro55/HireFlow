@@ -4,6 +4,8 @@ import LoginPage from '../pages/LoginPage.jsx';
 import RoleDashboardPage from '../pages/RoleDashboardPage.jsx';
 import SignupPage from '../pages/SignupPage.jsx';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout.jsx';
+import RecruiterJobFormPage from '../pages/RecruiterJobFormPage.jsx';
+import RecruiterJobsPage from '../pages/RecruiterJobsPage.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +18,12 @@ export const router = createBrowserRouter([
           { index: true, element: <RoleHomeRedirect /> },
           {
             element: <RoleRoute role="recruiter" />,
-            children: [{ path: 'recruiter', element: <RoleDashboardPage role="recruiter" /> }],
+            children: [
+              { path: 'recruiter', element: <RoleDashboardPage role="recruiter" /> },
+              { path: 'recruiter/jobs', element: <RecruiterJobsPage /> },
+              { path: 'recruiter/jobs/new', element: <RecruiterJobFormPage /> },
+              { path: 'recruiter/jobs/:id/edit', element: <RecruiterJobFormPage /> },
+            ],
           },
           {
             element: <RoleRoute role="candidate" />,
