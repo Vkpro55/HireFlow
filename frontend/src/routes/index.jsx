@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute, RoleHomeRedirect, RoleRoute } from '../components/auth/RouteGuards.jsx';
 import LoginPage from '../pages/LoginPage.jsx';
-import RoleDashboardPage from '../pages/RoleDashboardPage.jsx';
+import CandidateDashboardPage from '../pages/CandidateDashboardPage.jsx';
+import RecruiterDashboardPage from '../pages/RecruiterDashboardPage.jsx';
 import SignupPage from '../pages/SignupPage.jsx';
 import AuthenticatedLayout from '../layouts/AuthenticatedLayout.jsx';
 import RecruiterJobFormPage from '../pages/RecruiterJobFormPage.jsx';
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
           {
             element: <RoleRoute role="recruiter" />,
             children: [
-              { path: 'recruiter', element: <RoleDashboardPage role="recruiter" /> },
+              { path: 'recruiter', element: <RecruiterDashboardPage /> },
               { path: 'recruiter/jobs', element: <RecruiterJobsPage /> },
               { path: 'recruiter/jobs/new', element: <RecruiterJobFormPage /> },
               { path: 'recruiter/jobs/:id/edit', element: <RecruiterJobFormPage /> },
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
           {
             element: <RoleRoute role="candidate" />,
             children: [
-              { path: 'candidate', element: <RoleDashboardPage role="candidate" /> },
+              { path: 'candidate', element: <CandidateDashboardPage /> },
               { path: 'candidate/jobs', element: <CandidateJobsPage /> },
               { path: 'candidate/jobs/:id', element: <CandidateJobDetailsPage /> },
               { path: 'candidate/applications', element: <CandidateApplicationsPage /> },
