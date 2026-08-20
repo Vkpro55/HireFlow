@@ -11,6 +11,8 @@ import CandidateJobsPage from '../pages/CandidateJobsPage.jsx';
 import CandidateJobDetailsPage from '../pages/CandidateJobDetailsPage.jsx';
 import CandidateApplicationsPage from '../pages/CandidateApplicationsPage.jsx';
 import RecruiterApplicationsPage from '../pages/RecruiterApplicationsPage.jsx';
+import ProfilePage from '../pages/ProfilePage.jsx';
+import SavedJobsPage from '../pages/SavedJobsPage.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,7 @@ export const router = createBrowserRouter([
         element: <AuthenticatedLayout />,
         children: [
           { index: true, element: <RoleHomeRedirect /> },
+          { path: 'profile', element: <ProfilePage /> },
           {
             element: <RoleRoute role="recruiter" />,
             children: [
@@ -38,6 +41,7 @@ export const router = createBrowserRouter([
               { path: 'candidate/jobs', element: <CandidateJobsPage /> },
               { path: 'candidate/jobs/:id', element: <CandidateJobDetailsPage /> },
               { path: 'candidate/applications', element: <CandidateApplicationsPage /> },
+              { path: 'candidate/saved-jobs', element: <SavedJobsPage /> },
             ],
           },
         ],

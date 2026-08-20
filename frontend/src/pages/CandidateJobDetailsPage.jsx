@@ -1,8 +1,9 @@
-import { ArrowLeft, CalendarDays, CheckCircle2, MapPin } from 'lucide-react';
+import { ArrowLeft, Bookmark, CalendarDays, CheckCircle2, MapPin } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { applyToJob, getMyApplications } from '../api/applications.js';
 import { getJob } from '../api/jobs.js';
+import { getSavedJobs, toggleSavedJob } from '../api/profile.js';
 import ApplicationForm from '../features/applications/ApplicationForm.jsx';
 import ApplicationStatusBadge from '../components/applications/ApplicationStatusBadge.jsx';
 import Button from '../components/ui/Button.jsx';
@@ -25,10 +26,12 @@ function CandidateJobDetailsPage() {
   const [isApplyOpen, setIsApplyOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [applyError, setApplyError] = useState('');
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    Promise.allSettled([getJob(id), getMyApplications({ limit: 100 })])
-      .then(([jobResult, applicationsResult]) => {
+    Promise.allSettled([getJob(id), getMyApplications({ limit: 100 }), getSavedJobs()])
+      .then(([jobResult, applicationsResult, savedJobsResult]) => {
         if (jobResult.status === 'rejected') {
           setError(jobResult.reason.response?.data?.message || 'Unable to load this job');
           return;
@@ -37,6 +40,7 @@ function CandidateJobDetailsPage() {
         if (applicationsResult.status === 'fulfilled') {
           setApplication(applicationsResult.value.applications.find((item) => item.job?._id === id) || null);
         }
+        if (savedJobsResult.status === 'fulfilled') setIsSaved(savedJobsResult.value.some((item) => item._id === id));
       })
       .finally(() => setIsLoading(false));
   }, [id]);
@@ -52,6 +56,15 @@ function CandidateJobDetailsPage() {
       setApplyError(requestError.response?.data?.message || 'Unable to submit application');
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleSave() {
+    try {
+      setIsSaving(true);
+      setIsSaved(await toggleSavedJob(id));
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -72,7 +85,7 @@ function CandidateJobDetailsPage() {
               <span className="flex items-center gap-2"><CalendarDays size={16} aria-hidden="true" />Apply by {formatDeadline(job.deadline)}</span>
             </div>
           </div>
-          <span className="self-start rounded-full bg-green-100 px-3 py-1 font-body-xs text-body-xs text-green-800">Open</span>
+          <div className="flex items-center gap-3 self-start"><button className="flex items-center gap-2 rounded-md border border-border-default px-3 py-2 font-body-sm text-body-sm text-text-primary" type="button" onClick={handleSave} disabled={isSaving}><Bookmark size={16} className={isSaved ? 'fill-current' : ''} aria-hidden="true" />{isSaved ? 'Saved' : 'Save job'}</button><span className="rounded-full bg-green-100 px-3 py-1 font-body-xs text-body-xs text-green-800">Open</span></div>
         </div>
 
         <div className="grid gap-6 border-b border-border-light py-7 sm:grid-cols-3">

@@ -6,6 +6,7 @@ import { env } from './config/env.js';
 import authRoutes from './routes/authRoutes.js';
 import applicationRoutes from './routes/applicationRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
 
 const app = express();
@@ -17,6 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/profile', profileRoutes);
 
 async function start() {
   await connectDb();

@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: ROLES.CANDIDATE,
     },
+    headline: { type: String, trim: true, maxlength: 160, default: '' },
+    bio: { type: String, trim: true, maxlength: 2000, default: '' },
+    skills: { type: [String], default: [] },
+    experience: { type: [String], default: [] },
+    education: { type: [String], default: [] },
+    savedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }],
   },
   { timestamps: true }
 );

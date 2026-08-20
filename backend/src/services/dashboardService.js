@@ -3,6 +3,7 @@ import { APPLICATION_STATUS } from '../constants/applications.js';
 import { JOB_STATUS } from '../constants/jobs.js';
 import { Application } from '../models/Application.js';
 import { Job } from '../models/Job.js';
+import { User } from '../models/User.js';
 
 function toObjectId(id) {
   return new mongoose.Types.ObjectId(id);
@@ -15,7 +16,7 @@ export async function getCandidateDashboard(candidateId) {
     .limit(5)
     .populate('job', 'title companyName deadline location');
 
-  const [totalApplications, statusCounts, upcomingDeadlines] = await Promise.all([
+  const [totalApplications, statusCounts, upcomingDeadlines, savedJobs] = await Promise.all([
     Application.countDocuments({ candidate: candidateObjectId }),
     Application.aggregate([
       { $match: { candidate: candidateObjectId } },
@@ -25,12 +26,13 @@ export async function getCandidateDashboard(candidateId) {
       .populate({ path: 'job', match: { deadline: { $gte: new Date() }, status: JOB_STATUS.OPEN }, select: 'title companyName deadline' })
       .sort({ appliedAt: -1 })
       .limit(5),
+    User.findById(candidateObjectId).select('savedJobs'),
   ]);
 
   return {
     metrics: {
       totalApplications,
-      savedJobs: 0,
+      savedJobs: savedJobs?.savedJobs?.length || 0,
       upcomingDeadlines: upcomingDeadlines.filter(({ job }) => job).length,
     },
     statusCounts: statusCounts.reduce((result, item) => ({ ...result, [item._id]: item.count }), {}),

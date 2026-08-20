@@ -18,8 +18,8 @@ function AuthenticatedLayout() {
     { label: 'Dashboard', mobileLabel: 'Home', path: dashboardPath, icon: LayoutDashboard, end: true },
     ...(user.role === 'recruiter'
       ? [{ label: 'Jobs', mobileLabel: 'Jobs', path: '/recruiter/jobs', icon: BriefcaseBusiness }]
-      : [{ label: 'Jobs', mobileLabel: 'Jobs', path: '/candidate/jobs', icon: BriefcaseBusiness }, { label: 'Applications', mobileLabel: 'Apps', path: '/candidate/applications', icon: ClipboardList }]),
-    { label: 'Profile', mobileLabel: 'Profile', icon: UserRound, disabled: true },
+      : [{ label: 'Jobs', mobileLabel: 'Jobs', path: '/candidate/jobs', icon: BriefcaseBusiness }, { label: 'Applications', mobileLabel: 'Apps', path: '/candidate/applications', icon: ClipboardList }, { label: 'Saved jobs', mobileLabel: 'Saved', path: '/candidate/saved-jobs', icon: ClipboardList }]),
+    { label: 'Profile', mobileLabel: 'Profile', path: '/profile', icon: UserRound },
   ];
 
   return (
