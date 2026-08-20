@@ -1,11 +1,12 @@
 const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
+const VALID_ROLES = ['candidate', 'recruiter'];
 
 function validateRememberValue(remember) {
   return remember === undefined || typeof remember === 'boolean';
 }
 
 export function validateRegister(req, res, next) {
-  const { name, email, password, remember } = req.body;
+  const { name, email, password, role, remember } = req.body;
 
   if (!name?.trim()) {
     return res.status(400).json({ message: 'Name is required' });
@@ -17,6 +18,10 @@ export function validateRegister(req, res, next) {
 
   if (!password || password.length < 6) {
     return res.status(400).json({ message: 'Password must be at least 6 characters' });
+  }
+
+  if (role !== undefined && !VALID_ROLES.includes(role)) {
+    return res.status(400).json({ message: 'Role must be candidate or recruiter' });
   }
 
   if (!validateRememberValue(remember)) {

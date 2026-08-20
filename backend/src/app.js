@@ -8,6 +8,7 @@ import applicationRoutes from './routes/applicationRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import profileRoutes from './routes/profileRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
+import { errorHandler, notFound } from './middleware/errors.js';
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/profile', profileRoutes);
+app.use(notFound);
+app.use(errorHandler);
 
 async function start() {
   await connectDb();
